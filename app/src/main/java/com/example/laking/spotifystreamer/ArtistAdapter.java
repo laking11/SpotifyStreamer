@@ -46,16 +46,14 @@ public class ArtistAdapter extends ArrayAdapter<MyArtist> {
             vh = (ViewHolder) convertView.getTag();
         }
 
-        String imageUrl = "https:/api.spotify.com/";
-        if (! a.getImage().isEmpty()) {
-            imageUrl = a.getImage();
+        String imageUrl = a.getImage();
+        if (imageUrl.isEmpty()) {
+            vh.image.setImageResource(R.drawable.no_image);
+        } else {
+            Picasso.with(getContext()).load(imageUrl).placeholder(R.drawable.loading_test).
+                    error(R.drawable.no_image).into(vh.image);
         }
-
-        Picasso.with(getContext()).load(imageUrl).placeholder(R.drawable.loading_test).
-                error(R.drawable.no_image).into(vh.image);
-
         vh.name.setText(a.getName());
-        notifyDataSetChanged();
         return convertView;
     }
 }

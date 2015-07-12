@@ -4,16 +4,13 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,7 +31,7 @@ public class ArtistFragment extends Fragment {
 
     private ArtistAdapter mArtistAdapter;
     private ArrayList<MyArtist> mArtistList;
-    private EditText et;
+    private SearchView sv;
     private ListView lv;
 
     public ArtistFragment() {
@@ -65,21 +62,22 @@ public class ArtistFragment extends Fragment {
         View root  = inflater.inflate(R.layout.fragment_artist, container, false);
 
         //  Setup the text enter view
-        et = (EditText) root.findViewById(R.id.edit_search);
-        et.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        sv = (SearchView) root.findViewById(R.id.edit_search);
+        sv.setQueryHint(getString(R.string.enter_artist));
+        sv.setIconified(false);
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    // Don't do anything if string is empty
-                    // else launch search
-                    if (v.getText().toString().isEmpty()) {
-                        handled = true;
-                    } else {
-                        startSearch(v.getText().toString());
-                    }
+            public boolean onQueryTextSubmit(String query) {
+                String keyWord = sv.getQuery().toString();
+                if (!keyWord.isEmpty()) {
+                    startSearch(keyWord);
                 }
-                return handled;
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
             }
         });
 
@@ -132,13 +130,18 @@ public class ArtistFragment extends Fragment {
                 for (Artist a : ap.artists.items) {
                     String imgUrl = "";
                     if (a.images.size() > 0 ) {
-                        imgUrl = a.images.get(0).url;
+                        int imgPos=0;
+                        if (a.images.size() > 2) {
+                            imgPos = a.images.size() - 2;
+                        }
+                        imgUrl = a.images.get(imgPos).url;
                     }
                     mArtistList.add(new MyArtist(a.name, a.id, imgUrl));
                 }
                 mArtistAdapter.notifyDataSetChanged();
             } else {
-                Toast.makeText(getActivity(),et.getText() + getString(R.string.artist_not_found),
+                Toast.makeText(getActivity(),sv.getQuery().toString()
+                                + " " + getString(R.string.artist_not_found),
                         Toast.LENGTH_SHORT).show();
             }
         }

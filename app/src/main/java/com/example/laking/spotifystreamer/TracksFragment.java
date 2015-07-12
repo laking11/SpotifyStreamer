@@ -62,7 +62,7 @@ public class TracksFragment extends Fragment {
         if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
             artistId = intent.getStringExtra(Intent.EXTRA_TEXT);
         }
-        if (!artistId.isEmpty()) {
+        if (mTrackList == null && !artistId.isEmpty()) {
             startSearch(artistId);
         }
         View root  = inflater.inflate(R.layout.fragment_tracks, container, false);
@@ -105,12 +105,17 @@ public class TracksFragment extends Fragment {
                 for (Track t : tp.tracks) {
                     String imgUrl = "";
                     if (t.album.images.size() > 0 ) {
-                        imgUrl = t.album.images.get(0).url;
+                        int imgPos=0;
+                        if (t.album.images.size() > 2) {
+                            imgPos = t.album.images.size() - 2;
+                        }
+                       imgUrl = t.album.images.get(imgPos).url;
                     }
                     mTrackList.add(new MyTrack(t.name, t.album.name,imgUrl));
                 }
                 mTrackAdapter.notifyDataSetChanged();
-                String title = tp.tracks.get(0).artists.get(0).name + "'s Top 10 Tracks";
+                String title = tp.tracks.get(0).artists.get(0).name
+                        + getString(R.string.top_ten_track_poss);
                 getActivity().setTitle(title);
             } else {
                 Toast.makeText(getActivity(),R.string.tracks_not_found,Toast.LENGTH_SHORT).show();

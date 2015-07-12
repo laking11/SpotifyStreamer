@@ -5,6 +5,8 @@
     <string name="enter_artist">Enter Artist Name</string>
     <string name="title_activity_artist_fragment">ArtistFragment</string>
 
-    <string name="artist_not_found"> not found.  Try a different artist.</string>
+    <string name="artist_not_found">not found.  Try a different artist.</string>
     <string name="tracks_not_found">No tracks found</string>
+    <string name="top_ten_track_poss">"\'s Top 10 Tracks"</string>
+    <string name="top_ten_track">"Top 10 Tracks"</string>
 </resources>

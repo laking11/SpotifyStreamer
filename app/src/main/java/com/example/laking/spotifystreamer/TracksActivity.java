@@ -12,6 +12,7 @@ public class TracksActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracks);
+        setTitle(getString(R.string.top_ten_track));
 //        if (savedInstanceState == null) {
 //            getSupportFragmentManager().beginTransaction()
 //                    .add(R.id.tracks_fragment, new TracksFragment())

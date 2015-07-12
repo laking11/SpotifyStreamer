@@ -48,18 +48,17 @@ public class TrackAdapter extends ArrayAdapter<MyTrack> {
             vh = (ViewHolder) convertView.getTag();
         }
 
-
-        String imageUrl = "https:/api.spotify.com/";
-        if (!t.getImage().isEmpty()) {
-            imageUrl = t.getImage();
+        String imageUrl = t.getImage();
+        if (imageUrl.isEmpty()) {
+            vh.image.setImageResource(R.drawable.no_image);
+        } else {
+            Picasso.with(getContext()).load(imageUrl).placeholder(R.drawable.loading_test).
+                    error(R.drawable.no_image).into(vh.image);
         }
-
-        Picasso.with(getContext()).load(imageUrl).placeholder(R.drawable.loading_test).
-                error(R.drawable.no_image).into(vh.image);
 
         vh.name.setText(t.getName());
         vh.album.setText(t.getAlbum());
-        //notifyDataSetChanged();
+
         return convertView;
     }
 }
