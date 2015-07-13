@@ -62,7 +62,7 @@ public class TracksFragment extends Fragment {
         if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
             artistId = intent.getStringExtra(Intent.EXTRA_TEXT);
         }
-        if (mTrackList == null && !artistId.isEmpty()) {
+        if (mTrackList.size() == 0 && !artistId.isEmpty()) {
             startSearch(artistId);
         }
         View root  = inflater.inflate(R.layout.fragment_tracks, container, false);
